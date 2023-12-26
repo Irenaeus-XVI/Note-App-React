@@ -18,7 +18,7 @@ export function showAddModal({ token, updater }) {
             const Content = document.getElementById('Content').value
             return { title, Content }
         },
-        allowOutsideClick: () => !Swal.isLoading()
+        allowOutsideClick: false
     }).then((result) => {
         console.log(result);
         addNote({ title: result.value.title, content: result.value.Content, token, updater })
@@ -38,6 +38,13 @@ async function addNote({ title, content, token, updater }) {
     })
     if (data.msg === 'done') {
         console.log(data);
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Your Note has been Added",
+            showConfirmButton: false,
+            timer: 1500
+        });
         getUserNotes({ token, updater })
     }
 }
@@ -91,4 +98,56 @@ export async function deleteNote({ token, noteId, updater }) {
     })
     getUserNotes({ token, updater })
     console.log(data);
+}
+
+
+
+
+
+
+
+
+
+export function showUpdateModal({ prevTitle, prevContent, noteId, token, updater }) {
+    Swal.fire({
+        title: "Update Note 📝",
+        html: `
+        <input type="text" placeholder="Enter Title" id="title" class="form-control mb-2"  value="${prevTitle}"/>
+        <textarea type="text" placeholder="Enter Content" id="Content" class="form-control"  >${prevContent}</textarea>
+      `,
+        showCancelButton: true,
+        confirmButtonText: "Update",
+        showLoaderOnConfirm: true,
+        preConfirm: async (login) => {
+            const title = document.getElementById('title').value
+            const Content = document.getElementById('Content').value
+            return { title, Content }
+        },
+        allowOutsideClick: false
+    }).then((result) => {
+        updateDate({ newTitle: result.value.title, newContent: result.value.Content, noteId, token, updater })
+    });
+}
+
+
+
+async function updateDate({ newTitle, newContent, noteId, token, updater }) {
+    const { data } = await axios.put(`https://note-sigma-black.vercel.app/api/v1/notes/${noteId}`, {
+        title: newTitle,
+        content: newContent
+    }, {
+        headers: {
+            token
+        }
+    })
+
+    getUserNotes({ token, updater }).then(
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Your Note has been Updated",
+            showConfirmButton: false,
+            timer: 1500
+        })
+    )
 }
