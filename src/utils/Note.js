@@ -45,11 +45,50 @@ async function addNote({ title, content, token, updater }) {
 
 
 export async function getUserNotes({ token, updater }) {
-    const { data } = await axios.get('https://note-sigma-black.vercel.app/api/v1/notes', {
+    try {
+        const { data } = await axios.get('https://note-sigma-black.vercel.app/api/v1/notes', {
+            headers: {
+                token
+            }
+        })
+
+        updater(data.notes)
+    } catch (error) {
+        updater([])
+    }
+}
+
+
+
+export function showDeleteModal({ token, noteId, updater }) {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteNote({ token, noteId, updater }).then(
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your Note has been deleted.",
+                    icon: "success"
+                })
+            )
+
+        }
+    });
+}
+
+export async function deleteNote({ token, noteId, updater }) {
+    const { data } = await axios.delete(`https://note-sigma-black.vercel.app/api/v1/notes/${noteId}`, {
         headers: {
             token
         }
     })
-
-    updater(data.notes)
+    getUserNotes({ token, updater })
+    console.log(data);
 }
