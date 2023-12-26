@@ -1,9 +1,4 @@
-.note {
-  --padding: 15px;
-  background-color: var(--white-900);
-  border: 2px solid var(--white-700);
-  border-radius: 12px;
-}
+.note {}
 
 .note [class="note-body"] {
   padding: var(--padding);

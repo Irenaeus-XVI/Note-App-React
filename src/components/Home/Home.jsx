@@ -17,14 +17,20 @@ export default function Home() {
   }, [])
   return (
     <>
-      <h2 className="font-Montserrat h4 heading">
-        <i className="bi bi-folder me-2"></i>My Notes
-      </h2>
+
+      <div className="container-flued">
+        <div className="row">
+          <h2 className="font-Montserrat h4 heading">
+            <i className="bi bi-folder me-2"></i>My Notes
+          </h2>
 
 
-      {notes == null ? <Loading /> : notes.length == 0 ? <h2>No Notes Found </h2> : <div className={styles.notes}>
-        {notes.map((note) => <Note note={note} key={note._id} />)}
-      </div>}
+          {notes == null ? <Loading /> : notes.length == 0 ? <h2>No Notes Found </h2> : <div className={styles.notes}>
+            {notes.map((note) => <Note note={note} key={note._id} />)}
+          </div>}
+        </div>
+      </div>
+
     </>
   );
 }

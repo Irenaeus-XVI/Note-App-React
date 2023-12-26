@@ -11,7 +11,7 @@ export default function Note({ note }) {
   const { notes, setNotes } = useContext(NoteContext)
   return (
     <>
-      <div className={`${style.note} note shadow `}>
+      <div className={`${style.note}  shadow rounded p-3 border `}>
         <div className="note-body">
           <h2 className="h6 fw-semibold m-0 font-Montserrat ">{note?.title}   </h2>
           <p className={`mb-0 mt-2`}>{note?.content}</p>
