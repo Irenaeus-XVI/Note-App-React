@@ -16,9 +16,12 @@ export default function UserContextProvider(props) {
         return data
     }
 
+    function logOut(values) {
+        localStorage.removeItem('token')
+        setToken(null)
+    }
 
-
-    return <UserContext.Provider value={{ sendDataToSignUp, sendDataToSignIn, token, setToken }} >
+    return <UserContext.Provider value={{ sendDataToSignUp, sendDataToSignIn, token, setToken, logOut }} >
         {props.children}
     </UserContext.Provider>
 }
