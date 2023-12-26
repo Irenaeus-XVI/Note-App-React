@@ -21,7 +21,8 @@ export function showAddModal({ token, updater }) {
         allowOutsideClick: false
     }).then((result) => {
         console.log(result);
-        addNote({ title: result.value.title, content: result.value.Content, token, updater })
+        if (result.isConfirmed) addNote({ title: result.value.title, content: result.value.Content, token, updater })
+
     });
 }
 
@@ -52,6 +53,7 @@ async function addNote({ title, content, token, updater }) {
 
 
 export async function getUserNotes({ token, updater }) {
+    console.log(token);
     try {
         const { data } = await axios.get('https://note-sigma-black.vercel.app/api/v1/notes', {
             headers: {
@@ -59,7 +61,7 @@ export async function getUserNotes({ token, updater }) {
             }
         })
 
-        updater(data.notes)
+        await updater(data.notes)
     } catch (error) {
         updater([])
     }
@@ -125,7 +127,7 @@ export function showUpdateModal({ prevTitle, prevContent, noteId, token, updater
         },
         allowOutsideClick: false
     }).then((result) => {
-        updateDate({ newTitle: result.value.title, newContent: result.value.Content, noteId, token, updater })
+        if (result.isConfirmed) updateDate({ newTitle: result.value.title, newContent: result.value.Content, noteId, token, updater })
     });
 }
 

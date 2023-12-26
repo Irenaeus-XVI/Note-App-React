@@ -3,12 +3,12 @@ import LoginImage from "../../assets/images/login.webp";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from 'yup'
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../Context/UserContext";
 export default function Login() {
 
 
-  const { sendDataToSignIn, setToken } = useContext(UserContext)
+  const { token, sendDataToSignIn, setToken } = useContext(UserContext)
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -32,12 +32,18 @@ export default function Login() {
         setIsLoading(false)
         //NOTE - Bearer Token
         localStorage.setItem('token', `3b8ny__${response.token}`)
-        setToken(response.token)
-        navigate('/')
+        setToken(localStorage.getItem('token'))
       }
 
     }
+
+
   })
+
+
+  useEffect(() => {
+    if (token) navigate('/')
+  }, [token])
 
   return (
     <section className="min-vh-100 d-flex align-items-center justify-content-center">
