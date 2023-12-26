@@ -2,14 +2,17 @@ import { useContext } from "react";
 import style from "./Sidebar.module.css";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
-
+import { showAddModal } from '../../utils/Note.js'
+import { NoteContext } from "../../Context/NoteContext.jsx";
 export default function Sidebar() {
 
-  const { logOut } = useContext(UserContext)
+  const { logOut, token } = useContext(UserContext)
+  const { setNotes } = useContext(NoteContext)
+
   return (
     <>
       <nav className={`${style.nav} shadow-sm`}>
-        <button className="btn btn-main text-capitalize w-100 mb-3">
+        <button className="btn btn-main text-capitalize w-100 mb-3" onClick={() => showAddModal({ token, updater: setNotes })}>
           <i className="fa-solid fa-plus me-2"></i>
           New Note
         </button>
