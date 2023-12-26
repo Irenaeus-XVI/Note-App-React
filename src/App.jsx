@@ -3,12 +3,15 @@ import Layout from "./components/Layout/Layout";
 import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
-import UserContextProvider from "./Context/UserContext";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import { useContext } from "react";
 
 function App() {
 
   const routes = createBrowserRouter([{
-    path: '', element: <Layout />, children: [
+    path: '', element: <ProtectedRoute>
+      <Layout />
+    </ProtectedRoute>, children: [
       { index: true, element: <Home /> }
     ]
   },
@@ -16,9 +19,7 @@ function App() {
   { path: 'register', element: <Register /> }])
   return (
     <>
-      <UserContextProvider>
-        <RouterProvider router={routes}></RouterProvider>
-      </UserContextProvider>
+      <RouterProvider router={routes}></RouterProvider>
     </>
   );
 }
